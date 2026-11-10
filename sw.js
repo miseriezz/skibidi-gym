@@ -1,15 +1,15 @@
-const CACHE_NAME = 'ddx-gym-pwa-v2';
+const CACHE_NAME = 'ddx-gym-pwa-v3';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './css/styles.css',
-  './js/data.js',
-  './js/db.js',
-  './js/timer.js',
-  './js/supabase.js',
-  './js/app.js',
-  './icons/icon.svg'
+  './styles.css',
+  './data.js',
+  './db.js',
+  './timer.js',
+  './supabase.js',
+  './app.js',
+  './icon.svg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -36,7 +36,6 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  // Skip caching for Supabase REST API calls
   if (url.hostname.includes('supabase.co')) {
     return;
   }
@@ -74,4 +73,3 @@ self.addEventListener('notificationclick', (event) => {
     })
   );
 });
-
