@@ -1,8 +1,8 @@
 @echo off
 chcp 65001 >nul
-title DDX Gym Tracker - Local Server
+title SKIBIDI Gym Tracker - Local Server
 echo ========================================================
-echo   DDX Gym Tracker PWA — Локальный сервер запущен!
+echo   SKIBIDI Gym Tracker PWA — Локальный сервер запущен!
 echo ========================================================
 echo.
 echo 1. На компьютере открой в браузере:

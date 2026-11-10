@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ddx-gym-pwa-v3';
+const CACHE_NAME = 'skibidi-gym-pwa-v5';
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,9 @@ const ASSETS = [
   './timer.js',
   './supabase.js',
   './app.js',
-  './icon.svg'
+  './icon.svg',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -68,7 +70,7 @@ self.addEventListener('notificationclick', (event) => {
         }
       }
       if (self.clients.openWindow) {
-        return self.clients.openWindow('./index.html');
+        return self.clients.openWindow('./');
       }
     })
   );

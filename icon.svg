@@ -12,7 +12,7 @@
   <rect width="512" height="512" rx="115" fill="url(#bg)"/>
   <rect x="16" y="16" width="480" height="480" rx="100" fill="none" stroke="#27272a" stroke-width="8"/>
   <!-- Dumbbell icon -->
-  <g transform="translate(256, 230) rotate(-18)">
+  <g transform="translate(256, 220) rotate(-18)">
     <!-- Bar -->
     <rect x="-110" y="-14" width="220" height="28" rx="8" fill="#a1a1aa"/>
     <!-- Left inner plate -->
@@ -24,6 +24,6 @@
     <!-- Right outer plate -->
     <rect x="156" y="-52" width="34" height="104" rx="10" fill="#34d399"/>
   </g>
-  <!-- DDX Label -->
-  <text x="256" y="425" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="76" fill="#fafafa" text-anchor="middle" letter-spacing="6">SKIBIDI</text>
+  <!-- SKIBIDI Label -->
+  <text x="256" y="425" font-family="system-ui, -apple-system, sans-serif" font-weight="900" font-size="60" fill="#fafafa" text-anchor="middle" letter-spacing="4">SKIBIDI</text>
 </svg>

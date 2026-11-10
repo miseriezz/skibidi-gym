@@ -84,7 +84,8 @@ const state = {
   // Фильтр упражнений
   muscleFilter: 'Все',
   // Открытая модалка
-  modal: null // { type, data }
+  modal: null, // { type, data }
+  deferredInstallPrompt: null
 };
 
 // === УТИЛИТЫ ===
@@ -444,13 +445,18 @@ function renderApp() {
     <div class="app-container">
       <header class="top-header">
         <div class="brand-title">
-          <div class="brand-logo">DDX</div>
+          <div class="brand-logo">SKIBIDI</div>
           <div class="brand-text">
-            <h1>DDX Gym Tracker</h1>
+            <h1>SKIBIDI Gym Tracker</h1>
             <p>${state.activeWorkout ? 'Активная тренировка в зале' : 'Личный дневник (Верх А / Низ / Верх Б)'}</p>
           </div>
         </div>
-        <div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          ${
+            state.deferredInstallPrompt
+              ? `<button class="btn btn-primary btn-sm" data-action="install-pwa">📲 Установить</button>`
+              : ''
+          }
           ${
             state.activeWorkout
               ? `<span class="status-pill ${wakeActive ? 'active-wake' : ''}">
@@ -728,7 +734,7 @@ function renderActiveWorkoutScreen() {
         }
 
         <div class="seat-note-bar" data-action="edit-seat-note" data-ex-index="${exIdx}">
-          <span>🪑 Настройка / заметка: <strong>${escapeHtml(exBlock.seatSettings || 'Нажми, чтобы записать сиденье в DDX')}</strong></span>
+          <span>🪑 Настройка / заметка: <strong>${escapeHtml(exBlock.seatSettings || 'Нажми, чтобы записать сиденье в SKIBIDI')}</strong></span>
           <span>✎</span>
         </div>
 
@@ -1143,7 +1149,7 @@ function renderWorkoutHistoryCard(w) {
   `;
 }
 
-// === ВКЛАДКА 3: ПРОГРЕССИЯ ВЕСОВ И БАЗА УПРАЖНЕНИЙ DDX ===
+// === ВКЛАДКА 3: ПРОГРЕССИЯ ВЕСОВ И БАЗА УПРАЖНЕНИЙ SKIBIDI ===
 
 function renderExercisesAndProgressScreen() {
   const filterTabs = ['Все', ...MUSCLE_GROUPS];
@@ -1191,7 +1197,7 @@ function renderExercisesAndProgressScreen() {
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <div>
-          <h2 style="margin:0; font-size:18px; font-weight:800;">Справочник DDX и Прогрессия</h2>
+          <h2 style="margin:0; font-size:18px; font-weight:800;">Справочник SKIBIDI и Прогрессия</h2>
           <p style="margin:2px 0 0 0; font-size:12px; color:var(--text-muted);">Нажми на упражнение для графика роста весов</p>
         </div>
         <button class="btn btn-primary btn-sm" data-action="open-new-exercise">+ Новое</button>
@@ -1598,7 +1604,7 @@ function renderModal() {
     `;
   }
 
-  // 4. Создание / Редактирование упражнения в справочнике DDX
+  // 4. Создание / Редактирование упражнения в справочнике SKIBIDI
   if (type === 'edit_exercise') {
     const ex = data.exercise || {
       id: `ex_custom_${Date.now()}`,
@@ -1619,7 +1625,7 @@ function renderModal() {
       <div class="modal-backdrop" data-action="close-modal-backdrop">
         <div class="modal-sheet">
           <div class="modal-header">
-            <h3>${data.isNew ? 'Новое упражнение DDX' : 'Редактировать упражнение'}</h3>
+            <h3>${data.isNew ? 'Новое упражнение SKIBIDI' : 'Редактировать упражнение'}</h3>
             <button class="btn btn-secondary btn-sm" data-action="close-modal">✕</button>
           </div>
 
@@ -2598,7 +2604,7 @@ function attachEventListeners() {
         const a = document.createElement('a');
         const dateStr = toLocalDateKey(new Date().toISOString());
         a.href = url;
-        a.download = `ddx_gym_backup_${dateStr}.json`;
+        a.download = `skibidi_gym_backup_${dateStr}.json`;
         a.click();
         URL.revokeObjectURL(url);
         showToast('Файл бэкапа сохранён!');
@@ -2609,15 +2615,15 @@ function attachEventListeners() {
         const payload = await exportFullDatabase();
         const jsonStr = JSON.stringify(payload, null, 2);
         const dateStr = toLocalDateKey(new Date().toISOString());
-        const fileName = `ddx_gym_backup_${dateStr}.json`;
+        const fileName = `skibidi_gym_backup_${dateStr}.json`;
 
         if (navigator.share) {
           try {
             const file = new File([jsonStr], fileName, { type: 'application/json' });
             if (navigator.canShare && navigator.canShare({ files: [file] })) {
               await navigator.share({
-                title: 'DDX Gym Backup',
-                text: `Бэкап тренировок DDX от ${dateStr}`,
+                title: 'SKIBIDI Gym Backup',
+                text: `Бэкап тренировок SKIBIDI от ${dateStr}`,
                 files: [file]
               });
               break;
@@ -2687,13 +2693,43 @@ function attachEventListeners() {
         }
         break;
       }
+
+      case 'install-pwa': {
+        if (state.deferredInstallPrompt) {
+          state.deferredInstallPrompt.prompt();
+          const choice = await state.deferredInstallPrompt.userChoice.catch(() => null);
+          if (choice && choice.outcome === 'accepted') {
+            state.deferredInstallPrompt = null;
+          }
+          renderApp();
+        }
+        break;
+      }
     }
   });
 }
 
 // === ИНИЦИАЛИЗАЦИЯ ПРИЛОЖЕНИЯ ===
 
+// Перехват события установки PWA (Chrome / Edge на Android)
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  state.deferredInstallPrompt = e;
+  renderApp();
+});
+
+window.addEventListener('appinstalled', () => {
+  state.deferredInstallPrompt = null;
+  showToast('Приложение установлено на главный экран! 🎉');
+  renderApp();
+});
+
 async function bootstrap() {
+  // Сразу регистрируем Service Worker (до любых async-ожиданий!), чтобы браузер разрешил установку PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+
   await initDatabase();
   await reloadAllData();
 
@@ -2744,13 +2780,6 @@ async function bootstrap() {
   );
 
   renderApp();
-
-  // Регистрация Service Worker для офлайн-режима PWA и установки на главный экран Vivo X300
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js').catch(() => {});
-    });
-  }
 }
 
 bootstrap();

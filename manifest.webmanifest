@@ -1,8 +1,9 @@
 {
-  "name": "DDX Gym Tracker — Личный дневник тренировок",
-  "short_name": "DDX Gym",
-  "description": "Персональный офлайн-дневник силовых тренировок в DDX (Верх А / Низ / Верх Б)",
-  "start_url": "./index.html",
+  "id": "./",
+  "name": "SKIBIDI Gym Tracker — Личный дневник тренировок",
+  "short_name": "SKIBIDI Gym",
+  "description": "Персональный офлайн-дневник силовых тренировок в SKIBIDI (Верх А / Низ / Верх Б)",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -11,10 +12,28 @@
   "lang": "ru",
   "icons": [
     {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
