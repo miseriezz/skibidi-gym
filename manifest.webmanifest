@@ -1,0 +1,21 @@
+{
+  "name": "DDX Gym Tracker — Личный дневник тренировок",
+  "short_name": "DDX Gym",
+  "description": "Персональный офлайн-дневник силовых тренировок в DDX (Верх А / Низ / Верх Б)",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
+
